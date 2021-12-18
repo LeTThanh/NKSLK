@@ -9,10 +9,10 @@ namespace NKSLK.Models.DAO
 {
     public class CongNhanDAO
     {
-        NKSLKModel db;
+        Model1 db;
         public CongNhanDAO()
         {
-            db = new NKSLKModel();
+            db = new Model1();
         }
 
         public IEnumerable<CongNhan> listCN(int pageNum, int pageSize,string name) //, string maxp,string minp, int idcategory
@@ -20,6 +20,13 @@ namespace NKSLK.Models.DAO
 
             string q = "select * from CongNhan where HoTen LIKE '%" + name + "%' or QueQuan LIKE '%" + name + "%'";
             var lst = db.Database.SqlQuery<CongNhan>(q).ToPagedList<CongNhan>(pageNum, pageSize);
+            return lst;
+        }
+        public List<CongNhan> lstCN() 
+        {
+
+            string q = "select * from CongNhan ";
+            var lst = db.Database.SqlQuery<CongNhan>(q).ToList<CongNhan>();
             return lst;
         }
         public void Delete(int id)
@@ -76,9 +83,46 @@ namespace NKSLK.Models.DAO
             db.CongNhans.Add(cn);
             db.SaveChanges();
         }
+        public IEnumerable<CongNhan> listCN_VeHuu(int pageNum, int pageSize) //, string maxp,string minp, int idcategory
+        {
+
+            string q = "SELECT * FROM dbo.CongNhan WHERE(GioiTinh = 1 AND (DATEDIFF(DAY, NgaySinh, GETDATE()) >= 54 * 365) AND(DATEDIFF(DAY, NgaySinh, GETDATE()) <= 55 * 365)) OR (GioiTinh = 0 AND (DATEDIFF(DAY, NgaySinh, GETDATE()) >= 49 * 365) AND(DATEDIFF(DAY, NgaySinh, GETDATE()) <= 50 * 365))";
+            var lst = db.Database.SqlQuery<CongNhan>(q).ToPagedList<CongNhan>(pageNum, pageSize);
+            return lst;
+        }
+        public IEnumerable<CongNhan> listCN_Tuoi(int pageNum, int pageSize,int dau, int cuoi) //, string maxp,string minp, int idcategory
+        {
+
+            string q = "SELECT* FROM dbo.CongNhan WHERE((YEAR(GETDATE()) -YEAR(NgaySinh)) > '" + dau + "' OR(((YEAR(GETDATE()) - YEAR(NgaySinh)) = '" + dau + "') AND(MONTH(GETDATE()) > MONTH(NgaySinh))) OR(((YEAR(GETDATE()) - YEAR(NgaySinh)) = '" + dau + "') AND(MONTH(GETDATE()) = MONTH(NgaySinh)) AND(DAY(GETDATE()) >= DAY(NgaySinh))) ) AND((YEAR(GETDATE()) - YEAR(NgaySinh)) < '" + cuoi + "' OR(((YEAR(GETDATE()) - YEAR(NgaySinh)) = '" + cuoi + "') AND(MONTH(GETDATE()) < MONTH(NgaySinh))) OR(((YEAR(GETDATE()) - YEAR(NgaySinh)) = '" + cuoi + "') AND(MONTH(GETDATE()) = MONTH(NgaySinh)) AND(DAY(GETDATE()) <= DAY(NgaySinh))))";
+            var lst = db.Database.SqlQuery<CongNhan>(q).ToPagedList<CongNhan>(pageNum, pageSize);
+            return lst;
+        }
+        public IEnumerable<CongNhan> listCN_PhongBan(int pageNum, int pageSize,string phongban) //, string maxp,string minp, int idcategory
+        {
+
+            string q = "Select * from CongNhan where PhongBan like '%" + phongban + "%' ";
+            var lst = db.Database.SqlQuery<CongNhan>(q).ToPagedList<CongNhan>(pageNum, pageSize);
+            return lst;
+        }
+        public IEnumerable<CongNhan> listCN_ChucVu(int pageNum, int pageSize,string chucvu) //, string maxp,string minp, int idcategory
+        {
+
+            string q = "Select * from CongNhan where ChucVu like '%" + chucvu + "%' ";
+            var lst = db.Database.SqlQuery<CongNhan>(q).ToPagedList<CongNhan>(pageNum, pageSize);
+            return lst;
+        }
+
+        public int SoTuoi(int MaCN)
+        {
+            string q = "SELECT DATEDIFF(DAY, NgaySinh, GETDATE())/365 FROM dbo.CongNhan where MaCN = '" + MaCN + "'";
+            int n = db.Database.SqlQuery<int>(q).FirstOrDefault();
+            return n;
+        }
         //public Category getCategoryname(Products pro)
         //{
         //    return db.Category.Single(i => i.ID == pro.IDCATEGORY);
         //}
+
+
     }
 }

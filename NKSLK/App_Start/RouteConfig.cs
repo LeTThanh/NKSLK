@@ -16,7 +16,7 @@ namespace NKSLK
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "admin", id = UrlParameter.Optional }
+                defaults: new { controller = "CongNhan", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

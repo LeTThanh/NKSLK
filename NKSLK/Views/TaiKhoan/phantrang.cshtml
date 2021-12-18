@@ -1,0 +1,137 @@
+﻿@model PagedList.IPagedList<NKSLK.Models.DTO.TaiKhoan>
+
+
+@using PagedList.Mvc
+
+@using NKSLK.Models.DAO
+@{ ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_adminLTE.cshtml";
+}
+
+<style>
+    .pagination {
+        display: inline;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: inline-block;
+            border: 1px solid #ddd;
+        }
+
+            .pagination a.active {
+                background-color: darkolivegreen;
+                color: white;
+                border-radius: 5px;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+                border-radius: 5px;
+            }
+
+    th {
+        text-align: center;
+        background-color: #5a77c8;
+    }
+
+    .col-sm-12.col-md-3 {
+        font-weight: 900;
+    }
+</style>
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Danh sách công nhân</h1>
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive" style="overflow: hidden">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer" id="dataTable_wrapper">
+                <form class="row" action="/TaiKhoan/phantrang" style="margin-bottom:10px">
+                   
+                    <br />
+                    <div style="border-style: outset; padding: 0px 0px 0px 12px; height: 40px; width: 100px; background-color: blue;">
+                        <a href="~/TaiKhoan/Create" style=" font-size: 18px; color: white; text-decoration: none;">
+                            Thêm mới
+                        </a>
+
+                    </div>
+                    <div class="col-sm-12 col-md-3" style="padding:0px; display:inline-block; float:right;">
+                        
+                        <input type="text" class="form-control" name="name" id="name" style="display:inline;width:55%" />
+                        <button class="btn btn-flat btn-success" type="submit">
+                            Tìm kiếm
+                        </button>
+                    </div>
+
+                </form>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Mã tài khoản</th>
+                                    <th>Tài khoản </th>
+                                    <th>Mật khẩu</th>
+                                    <th>Phân quyền</th>
+                                    <th>Mã công nhân</th>
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MaTK)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TaiKhoan1)
+                                    </td>
+                                    <td style="text-align:right">
+                                        @Html.DisplayFor(modelItem => item.MatKhau)
+                                    </td>
+                                    <td style="text-align:right">
+                                        @Html.DisplayFor(modelItem => item.PhanQuyen)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MaCN)
+                                    </td>
+                                    
+                                    <td>
+                                        <a href="~/TaiKhoan/Edit/@item.MaTK">
+                                            <i class="far fa-edit" style="margin: 0px 10px;"></i>
+                                        </a>
+
+                                        <a href="~/TaiKhoan/Delete/@item.MaTK" onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                                            <i class="far fa-trash-alt" style="margin: 0px 10px;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5"></div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="pagination" id="dataTable_paginate" style="text-align:right">
+                            @Html.PagedListPager(Model, pageNum => Url.Action("phantrang", new { pageNum })
+
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

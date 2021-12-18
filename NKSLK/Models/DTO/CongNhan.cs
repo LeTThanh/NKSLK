@@ -13,6 +13,7 @@ namespace NKSLK.Models.DTO
         public CongNhan()
         {
             DanhMucCongNhans = new HashSet<DanhMucCongNhan>();
+            TaiKhoans = new HashSet<TaiKhoan>();
         }
 
         [Key]
@@ -41,5 +42,8 @@ namespace NKSLK.Models.DTO
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DanhMucCongNhan> DanhMucCongNhans { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaiKhoan> TaiKhoans { get; set; }
     }
 }

@@ -1,0 +1,216 @@
+﻿@using NKSLK.Areas.User.Data.DAO
+@{
+    ViewBag.Title = "Trang đăng nhập";
+   
+}
+@using NKSLK.Models.DTO;
+<head>
+    
+    <style>
+        body {
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            -ms-background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            color: white;
+            max-width: 70%;
+            margin-left: 15%;
+           
+        }
+
+        a {
+            color: white;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        .title {
+            color: white;
+            font-size: 18px;
+        }
+        td, tr {
+            text-align: center;
+        }
+        th {
+            background-color: cornflowerblue;
+            text-align: center;
+        }
+        .DKDN {
+            
+            margin-left: 33%;
+        }
+        label{
+            margin-left:43%
+        }
+        .link{
+            margin-left:62%;
+            margin-top:-4.5%;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NKSLK</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/Assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/Assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/Assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/Assets/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/Assets/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/Assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/Assets/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="/Assets/plugins/summernote/summernote-bs4.min.css">
+</head>
+
+<body>
+    
+    <div class="DKDN">
+        @using (Html.BeginForm("Đăng nhập", "DangNhap", "User"))
+        {
+            if (Session["congnhan"] != null && Session["congnhan"] != "")
+            {
+                TaiKhoan tk = (TaiKhoan)Session["congnhan"];
+                <div class="card1">
+                    <ul>
+
+                        @{ UserDAO dao = new UserDAO();
+                            var cn = dao.getById(tk.MaCN);
+                        }
+                        <label>Xin chào @cn.HoTen </label>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Thông tin cá nhân</label>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã công nhân</th>
+                                            <th>Họ tên </th>
+                                            <th>Ngày sinh</th>
+                                            <th>Giới tính</th>
+                                            <th>Phòng ban</th>
+                                            <th>Chức vụ </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td>
+                                                @cn.MaCN
+                                            </td>
+                                            <td>
+                                                @cn.HoTen
+                                            </td>
+                                            <td>
+                                                @cn.NgaySinh
+                                            </td>
+                                            <td>
+                                                @{
+                                                    var gt = "";
+                                                    if (cn.GioiTinh == true)
+                                                    {
+                                                        gt = "Nam";
+                                                    }
+
+                                                    else
+                                                    {
+                                                        gt = "Nữ";
+                                                    }
+
+                                                }
+
+                                                @Html.DisplayFor(modelItem => gt)
+                                            </td>
+                                            <td>
+                                                @cn.PhongBan
+                                            </td>
+
+                                            <td>
+
+                                                @cn.ChucVu
+
+                                            </td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Thông tin tài khoản</label>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tài khoản</th>
+                                            <th>Mật khẩu </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td>
+                                                @tk.TaiKhoan1
+                                            </td>
+                                            <td>
+                                                @tk.MatKhau
+                                            </td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+
+
+                    </ul>
+                    <div style="margin-left:30%">@Html.ActionLink("Đăng Xuất", "DangXuat", "User")</div>
+
+                </div>
+            }
+            else
+            {
+                <i class="fas fa-sign-in-alt"></i>
+                @Html.ActionLink("Đăng nhập", "DangNhap", "User", htmlAttributes: new { @class = "DangNhap" })
+                <div class="link">
+                    @Html.ActionLink("Đăng ký", "Create", "User", htmlAttributes: new { @class = "Create" })
+                </div>
+
+
+            }
+
+
+        }
+        <div class="link">
+            @Html.ActionLink("Đăng ký", "Create", "User", htmlAttributes: new { @class = "Create" })
+        </div>
+    </div>
+</body>
